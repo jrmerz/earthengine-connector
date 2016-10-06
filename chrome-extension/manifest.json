@@ -1,0 +1,22 @@
+
+{
+  "name": "EarthEngine Connector",
+  "description": "Load local NodeJS scripts into EE",
+  "version": "0.0.1",
+    "default_locale": "en",
+  "permissions": [
+    "activeTab",
+     "http://127.0.0.1:9812/"
+  ],
+   "icons": {
+    "16": "images/icon-16.png",
+    "128": "images/icon-128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://code.earthengine.google.com/*"],
+      "js": ["scripts/main.js"]
+    }
+  ],
+  "manifest_version": 2
+}
