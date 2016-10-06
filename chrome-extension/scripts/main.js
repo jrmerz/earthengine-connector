@@ -59,6 +59,7 @@ setTimeout(function(){
   button.style.zIndex = 10000;
   button.style.bottom = 0;
   button.style.right = 0;
+  
   button.addEventListener('click', function(){
     setTimeout(function(){
       clear(function(){

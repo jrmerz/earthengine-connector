@@ -10,7 +10,10 @@ if( process.argv.length > 2 ) {
   root = process.argv[2];
 }
 
-console.log('Serving: '+root+' @ http://127.0.0.1:9812');
+require('./lib/logo.js');
+
+console.log('Serving:  '+root);
+console.log('URL:      http://127.0.0.1:9812\n');
 
 app.get('/*', function(req, res) {
   var file = path.join(root, req.path);
