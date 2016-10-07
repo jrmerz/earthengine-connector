@@ -1910,17 +1910,16 @@ Custom property | Description | Default
         padding: 5px;
         box-shadow: rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px;
         border-radius: 3px;
-        max-width: 350px;
+        max-width: 400px;
       }
       #loading {
         display: none;
       }
       #from {
-        border-top: 1px solid #ccc;
         color: #ccc;
         padding-top: 5px;
-        margin-top: 5px;
         font-size: 11px;
+        flex-grow:1;
       }
       .sub-heading {
         padding: 0 0 10px 10px;
@@ -1934,6 +1933,12 @@ Custom property | Description | Default
       .file-list-item:hover {
         background-color: #f8f8f8;
         cursor: pointer;
+      }
+      .footer {
+        margin-top: 5px;
+        display: flex;
+        align-items: center;
+        border-top: 1px solid #ccc;
       }
     </style>
 
@@ -1953,8 +1958,6 @@ Custom property | Description | Default
     <div id="error" style="color: red">
       Error connecting the JS-EE server.  Please verify the js-ee connector is
       turned on and you can access <a href="http://127.0.0.1:9812/" target="_blank">http://127.0.0.1:9812/</a>.<br>
-      
-      <paper-icon-button icon="cached" on-click="loadFiles" style="color: #333"></paper-icon-button>
     </div>
 
     <div id="list">
@@ -1968,7 +1971,11 @@ Custom property | Description | Default
       </div>
     </div>
 
-    <div id="from"></div>
+    <div class="footer">
+      <div id="from"></div>
+      <paper-icon-button icon="cached" on-click="loadFiles" style="color: #333"></paper-icon-button>
+      <div style="text-align:right"><a href="https://github.com/jrmerz/earthengine-connector" target="_blank">Help</a></div>
+    </div>
     
   </template>
   </dom-module>

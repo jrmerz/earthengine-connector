@@ -10625,6 +10625,13 @@ Polymer({
               if( httpRequest.status === 200 ) {
                 this.writeChar(httpRequest.responseText);
                 this.fire('file-load');
+              } else if( httpRequest.status === 400 ) {
+                this.writeChar(
+                    '********** JS ERROR **********\n'+
+                    'Importing File: '+this.currentFile.path+'/'+this.currentFile.file+'\n\n'+
+                    httpRequest.responseText
+                );
+                this.fire('file-load');
               } else {
                 alert('Failed to load '+this.currentFile.path+'/'+this.currentFile.file+'. '+
                       'Check the js-ee server is running and that no syntax errors are found.');

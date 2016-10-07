@@ -10,6 +10,9 @@ if( process.argv.length > 2 ) {
   root = process.argv[2];
 }
 
+/**
+ * Quick check for options.  There are not many
+ */
 if( root.toLowerCase() === '-h' || root.toLowerCase() === '--help' ) {
   console.log(` 
     Usage: js-ee [dir] 
@@ -22,6 +25,9 @@ if( root.toLowerCase() === '-h' || root.toLowerCase() === '--help' ) {
   return;
 }
 
+/**
+ * Verify path
+ */
 if( !root.match(/^\//) ) {
   root = path.join(process.cwd(), root);
 }
@@ -32,20 +38,32 @@ if( !fs.existsSync(root) ) {
 
 require('./lib/logo');
 
+/**
+ * Setup CORS
+ */
 app.use((req, res, next) => {
   res.set('Access-Control-Allow-Origin', '*');
   next();
 });
 
+/**
+ * Debug screen at root.
+ */
 app.get('/', (req, res) => {
   res.send(`<h1>It Works!</h1>
     The EarthEngine Connector Server is up and running.
   `);
 });
 
+/**
+ * Set endpoints
+ */
 require('./lib/list')(app, root);
 require('./lib/build')(app, root);
 
+/**
+ * Start
+ */
 app.listen(9812);
 
 console.log('Serving:  '+root);
