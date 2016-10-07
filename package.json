@@ -1,7 +1,7 @@
 {
   "name": "earthengine-connector",
   "version": "0.0.1",
-  "description": "Run local NodeJS scripts using CommonJS modules in earthengine",
+  "description": "Run local NodeJS scripts using CommonJS modules in EarthEngine",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
