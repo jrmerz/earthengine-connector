@@ -1880,16 +1880,23 @@ Custom property | Description | Default
         display: block;
         position: fixed;
         z-index: 10000;
-        bottom: 10px;
+        bottom: 20px;
         right: 10px;
       }
       #files {
         display : none;
       }
+      #reload {
+        display : none;
+        margin-right: 10px;
+      }
     </style>
 
-    <paper-fab mini="" icon="file-upload" title="Import JS File" on-click="showFilePanel" id="fab"></paper-fab>
-    <file-select-panel on-close="hideFilePanel" id="files"></file-select-panel>
+    <div style="display:flex" id="btns">
+      <paper-fab mini="" icon="cached" title="Reload Current File" on-click="reload" id="reload"></paper-fab>
+      <paper-fab mini="" icon="file-upload" title="Import JS File" on-click="showFilePanel" id="fab"></paper-fab>
+    </div>
+    <file-select-panel on-close="hideFilePanel" on-file-load="onFileLoad" id="files"></file-select-panel>
 
   </template>
   </dom-module>
@@ -1910,6 +1917,8 @@ Custom property | Description | Default
       #from {
         border-top: 1px solid #ccc;
         color: #ccc;
+        padding-top: 5px;
+        margin-top: 5px;
         font-size: 11px;
       }
       .sub-heading {
@@ -1920,6 +1929,10 @@ Custom property | Description | Default
       }
       .file-list-item {
         padding: 5px;
+      }
+      .file-list-item:hover {
+        background-color: #f8f8f8;
+        cursor: pointer;
       }
     </style>
 
@@ -1940,7 +1953,9 @@ Custom property | Description | Default
       <div class="sub-heading">Select script to import</div>
       <div style="max-height: 250px; overflow-y: auto">
         <template is="dom-repeat" items="{{files}}">
-          <div class="file-list-item"><span>{{item.path}}</span>/<span>{{item.file}}</span></div>
+          <div class="file-list-item" on-click="onFileClick" index$="{{index}}">
+            <span>{{item.path}}</span>/<span>{{item.file}}</span>
+          </div>
         </template>
       </div>
     </div>
@@ -1949,4 +1964,5 @@ Custom property | Description | Default
     
   </template>
   </dom-module>
+
 </div></body></html>

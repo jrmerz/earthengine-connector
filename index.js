@@ -13,9 +13,6 @@ if( process.argv.length > 2 ) {
 
 require('./lib/logo.js');
 
-console.log('Serving:  '+root);
-console.log('URL:      http://127.0.0.1:9812\n');
-
 app.get('/_/list', function(req, res) {
   res.set('Access-Control-Allow-Origin', '*');
   var files = walk(root).map((f) => {
@@ -30,7 +27,7 @@ app.get('/_/list', function(req, res) {
 
 app.get('/*', function(req, res) {
   res.set('Access-Control-Allow-Origin', '*');
-  
+
   var file = path.join(root, req.path);
   if( fs.existsSync(file) ) {
     var b = browserify({});
@@ -52,3 +49,6 @@ app.get('/*', function(req, res) {
 });
 
 app.listen(9812);
+
+console.log('Serving:  '+root);
+console.log('URL:      http://127.0.0.1:9812\n');

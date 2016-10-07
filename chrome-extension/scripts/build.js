@@ -10518,17 +10518,21 @@ Polymer({
 
       showFilePanel : function() {
         this.$.files.style.display = 'block';
-        this.$.fab.style.display = 'none';
+        this.$.btns.style.display = 'none';
         this.$.files.onShow();
       },
 
       hideFilePanel : function() {
         this.$.files.style.display = 'none';
-        this.$.fab.style.display = 'block';
+        this.$.btns.style.display = 'flex';
       },
 
-      onListLoad : function(resp) {
-        this.$.files.onListLoad(resp);
+      onFileLoad : function() {
+        this.$.reload.style.display = 'block';
+      },
+
+      reload : function() {
+        this.$.files.loadScript();
       }
     });
 Polymer({
@@ -10570,5 +10574,72 @@ Polymer({
             this.set('files', resp.files);
           }
         }
+      },
+
+      onFileClick : function(e) {
+        var index = parseInt(e.currentTarget.getAttribute('index'));
+        var file = this.files[index];
+        this.currentFile = file;
+        this.loadScript();
+      },
+
+      loadScript : function() {
+        if( !this.currentFile ) return;
+
+        var httpRequest = new XMLHttpRequest();
+        httpRequest.onreadystatechange = onStateChange.bind(this);
+        httpRequest.open('GET', 'http://127.0.0.1:9812'+this.currentFile.path+'/'+this.currentFile.file);
+        httpRequest.send();
+
+        function onStateChange() {
+          if (httpRequest.readyState === XMLHttpRequest.DONE) {
+            this.clear(function(){
+              this.writeChar(httpRequest.responseText);
+              this.fire('file-load');
+            }.bind(this))
+          }
+        }
+      },
+
+      writeChar: function(char) {
+
+          document.querySelector('.ace_text-input').value = char;
+
+          testKeydown = new KeyboardEvent('keydown', {});
+          document.querySelector('.ace_text-input').dispatchEvent(testKeydown);
+
+          testKeypress = new KeyboardEvent('keypress', {});
+          document.querySelector('.ace_text-input').dispatchEvent(testKeypress);
+
+          testInput = new KeyboardEvent('input', {});
+          document.querySelector('.ace_text-input').dispatchEvent(testInput);
+
+          testKeyup = new KeyboardEvent('keyup', {});
+          document.querySelector('.ace_text-input').dispatchEvent(testKeyup);
+      },
+
+      clear : function(callback) {
+        this.click('.goog-inline-block.goog-flat-menu-button.custom-reset-button');
+        setTimeout(function(){
+          this.click('.goog-inline-block.goog-flat-menu-button.custom-reset-button');
+          setTimeout(function(){
+            this.click('.goog-menuitem.editor-custom-save-item');
+            callback();
+          }.bind(this), 100);
+        }.bind(this), 100);
+      },
+
+      click : function(eleQuery) {
+          var clickEvent = new MouseEvent('mouseover',{bubbles:true});
+          document.querySelector(eleQuery).dispatchEvent(clickEvent);
+
+          clickEvent = new MouseEvent('mousedown',{bubbles:true});
+          document.querySelector(eleQuery).dispatchEvent(clickEvent);
+
+          clickEvent = new MouseEvent('mouseup',{bubbles:true});
+          document.querySelector(eleQuery).dispatchEvent(clickEvent);
+
+          clickEvent = new MouseEvent('click',{bubbles:true});
+          document.querySelector(eleQuery).dispatchEvent(clickEvent);
       }
     });

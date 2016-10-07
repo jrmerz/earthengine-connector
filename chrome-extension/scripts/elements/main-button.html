@@ -6,16 +6,23 @@
         display: block;
         position: fixed;
         z-index: 10000;
-        bottom: 10px;
+        bottom: 20px;
         right: 10px;
       }
       #files {
         display : none;
       }
+      #reload {
+        display : none;
+        margin-right: 10px;
+      }
     </style>
 
-    <paper-fab mini icon="file-upload" title="Import JS File" on-click="showFilePanel" id="fab"></paper-fab>
-    <file-select-panel on-close="hideFilePanel" id="files"></file-select-panel>
+    <div style="display:flex" id="btns">
+      <paper-fab mini icon="cached" title="Reload Current File" on-click="reload" id="reload"></paper-fab>
+      <paper-fab mini icon="file-upload" title="Import JS File" on-click="showFilePanel" id="fab"></paper-fab>
+    </div>
+    <file-select-panel on-close="hideFilePanel" on-file-load="onFileLoad" id="files"></file-select-panel>
 
   </template>
   <script>
@@ -24,17 +31,21 @@
 
       showFilePanel : function() {
         this.$.files.style.display = 'block';
-        this.$.fab.style.display = 'none';
+        this.$.btns.style.display = 'none';
         this.$.files.onShow();
       },
 
       hideFilePanel : function() {
         this.$.files.style.display = 'none';
-        this.$.fab.style.display = 'block';
+        this.$.btns.style.display = 'flex';
       },
 
-      onListLoad : function(resp) {
-        this.$.files.onListLoad(resp);
+      onFileLoad : function() {
+        this.$.reload.style.display = 'block';
+      },
+
+      reload : function() {
+        this.$.files.loadScript();
       }
     });
   </script>
