@@ -1,0 +1,102 @@
+
+<dom-module id="file-select-panel">
+  <template>
+    <style>
+      :host {
+        display: block;
+        background-color: white;
+        margin: 5px;
+        padding: 5px;
+        box-shadow: rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px;
+        border-radius: 3px;
+      }
+      #loading {
+        display: none;
+      }
+      #from {
+        border-top: 1px solid #ccc;
+        color: #ccc;
+        padding-top: 5px;
+        margin-top: 5px;
+        font-size: 11px;
+      }
+      .sub-heading {
+        padding: 0 0 10px 10px;
+        margin-bottom: 5px;
+        color: #888;
+        border-bottom: 1px solid #ccc;
+      }
+      .file-list-item {
+        padding: 5px;
+      }
+    </style>
+
+    <div style="display: flex;align-items: center;">
+      <div style="padding:10px;flex-grow:1">
+        <b>EarthEngine Connector</b>
+      </div>
+      <div>
+        <paper-icon-button icon="close" on-click="triggerClose"></paper-icon-button>
+      </div>
+    </div>
+
+    <div id="loading">
+      Loading...
+    </div>
+
+    <div id="list">
+      <div class="sub-heading">Select script to import</div>
+      <div style="max-height: 250px; overflow-y: auto">
+        <template is="dom-repeat" items="{{files}}">
+          <div class="file-list-item"><span>{{item.path}}</span>/<span>{{item.file}}</span></div>
+        </template>
+      </div>
+    </div>
+
+    <div id="from"></div>
+    
+  </template>
+  <script>
+    Polymer({
+      is: 'file-select-panel',
+
+      properties : {
+        files : {
+          type : Array,
+          value : function() {
+            []
+          }
+        }
+      },
+
+      triggerClose : function() {
+        this.fire('close');
+      },
+
+      onShow : function() {
+        this.loadFiles();
+      },
+
+      loadFiles : function() {
+        this.$.loading.style.display = 'block';
+        this.$.list.style.dispay = 'none';
+
+        var httpRequest = new XMLHttpRequest();
+        httpRequest.onreadystatechange = done.bind(this);
+        httpRequest.open('GET', 'http://127.0.0.1:9812/_/list');
+        httpRequest.send();
+
+        function done() {
+          if (httpRequest.readyState === XMLHttpRequest.DONE) {
+            this.$.loading.style.display = 'none';
+            this.$.list.style.dispay = 'block';
+
+            var resp = JSON.parse(httpRequest.responseText);
+            this.$.from.innerHTML = 'FS Root: '+resp.root;
+            this.set('files', resp.files);
+          }
+        }
+      }
+    });
+  </script>
+</dom-module>

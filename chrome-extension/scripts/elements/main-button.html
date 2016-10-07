@@ -1,0 +1,41 @@
+
+<dom-module id="main-button">
+  <template>
+    <style>
+      :host {
+        display: block;
+        position: fixed;
+        z-index: 10000;
+        bottom: 10px;
+        right: 10px;
+      }
+      #files {
+        display : none;
+      }
+    </style>
+
+    <paper-fab mini icon="file-upload" title="Import JS File" on-click="showFilePanel" id="fab"></paper-fab>
+    <file-select-panel on-close="hideFilePanel" id="files"></file-select-panel>
+
+  </template>
+  <script>
+    Polymer({
+      is: 'main-button',
+
+      showFilePanel : function() {
+        this.$.files.style.display = 'block';
+        this.$.fab.style.display = 'none';
+        this.$.files.onShow();
+      },
+
+      hideFilePanel : function() {
+        this.$.files.style.display = 'none';
+        this.$.fab.style.display = 'block';
+      },
+
+      onListLoad : function(resp) {
+        this.$.files.onListLoad(resp);
+      }
+    });
+  </script>
+</dom-module>

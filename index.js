@@ -2,6 +2,7 @@ var express = require('express');
 var fs = require('fs');
 var path = require('path');
 var browserify = require('browserify');
+var walk = require('./lib/fast-walk');
 
 var app = express();
 var root = process.cwd();
@@ -15,7 +16,21 @@ require('./lib/logo.js');
 console.log('Serving:  '+root);
 console.log('URL:      http://127.0.0.1:9812\n');
 
+app.get('/_/list', function(req, res) {
+  res.set('Access-Control-Allow-Origin', '*');
+  var files = walk(root).map((f) => {
+                  f.path = f.path.replace(root, '');
+                  return f;
+                });
+  res.send({
+    files : files,
+    root : root
+  });
+});
+
 app.get('/*', function(req, res) {
+  res.set('Access-Control-Allow-Origin', '*');
+  
   var file = path.join(root, req.path);
   if( fs.existsSync(file) ) {
     var b = browserify({});
