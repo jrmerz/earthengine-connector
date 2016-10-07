@@ -1910,6 +1910,7 @@ Custom property | Description | Default
         padding: 5px;
         box-shadow: rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px;
         border-radius: 3px;
+        max-width: 350px;
       }
       #loading {
         display: none;
@@ -1949,9 +1950,16 @@ Custom property | Description | Default
       Loading...
     </div>
 
+    <div id="error" style="color: red">
+      Error connecting the JS-EE server.  Please verify the js-ee connector is
+      turned on and you can access <a href="http://127.0.0.1:9812/" target="_blank">http://127.0.0.1:9812/</a>.<br>
+      
+      <paper-icon-button icon="cached" on-click="loadFiles" style="color: #333"></paper-icon-button>
+    </div>
+
     <div id="list">
-      <div class="sub-heading">Select script to import</div>
-      <div style="max-height: 250px; overflow-y: auto">
+      <div class="sub-heading">Select local script to import</div>
+      <div style="max-height: 250px; overflow: auto">
         <template is="dom-repeat" items="{{files}}">
           <div class="file-list-item" on-click="onFileClick" index$="{{index}}">
             <span>{{item.path}}</span>/<span>{{item.file}}</span>

@@ -1,8 +1,7 @@
 var express = require('express');
 var fs = require('fs');
 var path = require('path');
-var browserify = require('browserify');
-var walk = require('./lib/fast-walk');
+
 
 var app = express();
 var root = process.cwd();
@@ -11,42 +10,41 @@ if( process.argv.length > 2 ) {
   root = process.argv[2];
 }
 
-require('./lib/logo.js');
+if( root.toLowerCase() === '-h' || root.toLowerCase() === '--help' ) {
+  console.log(` 
+    Usage: js-ee [dir] 
 
-app.get('/_/list', function(req, res) {
+     - dir: Optional directory path, otherwise current directory is served. 
+  `);
+  return;
+} else if( root.toLowerCase() === '-v' || root.toLowerCase() === '--version' ) {
+  console.log(JSON.parse(fs.readFileSync(path.join(__dirname, 'package.json'), 'utf-8')).version);
+  return;
+}
+
+if( !root.match(/^\//) ) {
+  root = path.join(process.cwd(), root);
+}
+if( !fs.existsSync(root) ) {
+  console.error(`Path does not exist: ${root}`);
+  process.exit(-1);
+}
+
+require('./lib/logo');
+
+app.use((req, res, next) => {
   res.set('Access-Control-Allow-Origin', '*');
-  var files = walk(root).map((f) => {
-                  f.path = f.path.replace(root, '');
-                  return f;
-                });
-  res.send({
-    files : files,
-    root : root
-  });
+  next();
 });
 
-app.get('/*', function(req, res) {
-  res.set('Access-Control-Allow-Origin', '*');
-
-  var file = path.join(root, req.path);
-  if( fs.existsSync(file) ) {
-    var b = browserify({});
-    b.add(file);
-    b.bundle(function(err, resp){
-      if( err ) {
-          res.status(404).end();
-          if( err.stack ) {
-            return console.error(err.stack);
-          } else {
-            return console.error(err);
-          }
-      }
-      res.send('var require;\n'+resp);
-    });
-  } else {
-    res.status(404).end();
-  }
+app.get('/', (req, res) => {
+  res.send(`<h1>It Works!</h1>
+    The EarthEngine Connector Server is up and running.
+  `);
 });
+
+require('./lib/list')(app, root);
+require('./lib/build')(app, root);
 
 app.listen(9812);
 

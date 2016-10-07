@@ -29,6 +29,10 @@
     Polymer({
       is: 'main-button',
 
+      attached : function() {
+        this.detectEEScriptLoad();
+      },
+
       showFilePanel : function() {
         this.$.files.style.display = 'block';
         this.$.btns.style.display = 'none';
@@ -46,6 +50,24 @@
 
       reload : function() {
         this.$.files.loadScript();
+      },
+
+      /**
+       * Attempt to detect when user loads EE script from 'Scripts' tab.
+       */
+      detectEEScriptLoad : function() {
+        document.addEventListener('mousedown', function(e){
+          var ele = e.target;
+          if( !ele ) return;
+          if( !ele.classList.contains('tree-item-name') ) return;
+
+          var parent = ele.parentElement;
+          if( !parent ) return;
+          if( !parent.classList.contains('file-type-file') ) return;
+
+          // hide the reload script, so we don't accidently click it.
+          this.$.reload.style.display = 'none';
+        }.bind(this));
       }
     });
   </script>

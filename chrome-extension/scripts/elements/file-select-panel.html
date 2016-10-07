@@ -9,6 +9,7 @@
         padding: 5px;
         box-shadow: rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px;
         border-radius: 3px;
+        max-width: 350px;
       }
       #loading {
         display: none;
@@ -48,9 +49,16 @@
       Loading...
     </div>
 
+    <div id="error" style="color: red">
+      Error connecting the JS-EE server.  Please verify the js-ee connector is
+      turned on and you can access <a href="http://127.0.0.1:9812/" target="_blank">http://127.0.0.1:9812/</a>.<br />
+      
+      <paper-icon-button icon="cached" on-click="loadFiles" style="color: #333"></paper-icon-button>
+    </div>
+
     <div id="list">
       <div class="sub-heading">Select local script to import</div>
-      <div style="max-height: 250px; overflow-y: auto">
+      <div style="max-height: 250px; overflow: auto">
         <template is="dom-repeat" items="{{files}}">
           <div class="file-list-item" on-click="onFileClick" index$="{{index}}">
             <span>{{item.path}}</span>/<span>{{item.file}}</span>
@@ -85,7 +93,8 @@
 
       loadFiles : function() {
         this.$.loading.style.display = 'block';
-        this.$.list.style.dispay = 'none';
+        this.$.list.style.display = 'none';
+        this.$.error.style.display = 'none';
 
         var httpRequest = new XMLHttpRequest();
         httpRequest.onreadystatechange = done.bind(this);
@@ -94,12 +103,17 @@
 
         function done() {
           if (httpRequest.readyState === XMLHttpRequest.DONE) {
-            this.$.loading.style.display = 'none';
-            this.$.list.style.dispay = 'block';
+            if( httpRequest.status === 200 ) {
+              this.$.loading.style.display = 'none';
+              this.$.list.style.display = 'block';
 
-            var resp = JSON.parse(httpRequest.responseText);
-            this.$.from.innerHTML = 'FS Root: '+resp.root;
-            this.set('files', resp.files);
+              var resp = JSON.parse(httpRequest.responseText);
+              this.$.from.innerHTML = 'FS Root: '+resp.root;
+              this.set('files', resp.files);
+            } else {
+              this.$.loading.style.display = 'none';
+              this.$.error.style.display = 'block';
+            }
           }
         }
       },
@@ -122,8 +136,13 @@
         function onStateChange() {
           if (httpRequest.readyState === XMLHttpRequest.DONE) {
             this.clear(function(){
-              this.writeChar(httpRequest.responseText);
-              this.fire('file-load');
+              if( httpRequest.status === 200 ) {
+                this.writeChar(httpRequest.responseText);
+                this.fire('file-load');
+              } else {
+                alert('Failed to load '+this.currentFile.path+'/'+this.currentFile.file+'. '+
+                      'Check the js-ee server is running and that no syntax errors are found.');
+              }
             }.bind(this))
           }
         }

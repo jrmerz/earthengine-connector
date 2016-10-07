@@ -10516,6 +10516,10 @@ Polymer({
 Polymer({
       is: 'main-button',
 
+      attached : function() {
+        this.detectEEScriptLoad();
+      },
+
       showFilePanel : function() {
         this.$.files.style.display = 'block';
         this.$.btns.style.display = 'none';
@@ -10533,6 +10537,24 @@ Polymer({
 
       reload : function() {
         this.$.files.loadScript();
+      },
+
+      /**
+       * Attempt to detect when user loads EE script from 'Scripts' tab.
+       */
+      detectEEScriptLoad : function() {
+        document.addEventListener('mousedown', function(e){
+          var ele = e.target;
+          if( !ele ) return;
+          if( !ele.classList.contains('tree-item-name') ) return;
+
+          var parent = ele.parentElement;
+          if( !parent ) return;
+          if( !parent.classList.contains('file-type-file') ) return;
+
+          // hide the reload script, so we don't accidently click it.
+          this.$.reload.style.display = 'none';
+        }.bind(this));
       }
     });
 Polymer({
@@ -10557,7 +10579,8 @@ Polymer({
 
       loadFiles : function() {
         this.$.loading.style.display = 'block';
-        this.$.list.style.dispay = 'none';
+        this.$.list.style.display = 'none';
+        this.$.error.style.display = 'none';
 
         var httpRequest = new XMLHttpRequest();
         httpRequest.onreadystatechange = done.bind(this);
@@ -10566,12 +10589,17 @@ Polymer({
 
         function done() {
           if (httpRequest.readyState === XMLHttpRequest.DONE) {
-            this.$.loading.style.display = 'none';
-            this.$.list.style.dispay = 'block';
+            if( httpRequest.status === 200 ) {
+              this.$.loading.style.display = 'none';
+              this.$.list.style.display = 'block';
 
-            var resp = JSON.parse(httpRequest.responseText);
-            this.$.from.innerHTML = 'FS Root: '+resp.root;
-            this.set('files', resp.files);
+              var resp = JSON.parse(httpRequest.responseText);
+              this.$.from.innerHTML = 'FS Root: '+resp.root;
+              this.set('files', resp.files);
+            } else {
+              this.$.loading.style.display = 'none';
+              this.$.error.style.display = 'block';
+            }
           }
         }
       },
@@ -10594,8 +10622,13 @@ Polymer({
         function onStateChange() {
           if (httpRequest.readyState === XMLHttpRequest.DONE) {
             this.clear(function(){
-              this.writeChar(httpRequest.responseText);
-              this.fire('file-load');
+              if( httpRequest.status === 200 ) {
+                this.writeChar(httpRequest.responseText);
+                this.fire('file-load');
+              } else {
+                alert('Failed to load '+this.currentFile.path+'/'+this.currentFile.file+'. '+
+                      'Check the js-ee server is running and that no syntax errors are found.');
+              }
             }.bind(this))
           }
         }
