@@ -1,5 +1,5 @@
 # ![Logo](chrome-extension/images/icon-128.png) Earth Engine Connector
-Run local NodeJS scripts using CommonJS modules in Earth Engine.
+Run local NodeJS scripts using CommonJS modules in the Earth Engine playground.
 
 ## Requirements
 
