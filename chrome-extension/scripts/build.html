@@ -1922,10 +1922,8 @@ Custom property | Description | Default
         flex-grow:1;
       }
       .sub-heading {
-        padding: 0 0 10px 10px;
-        margin-bottom: 5px;
+        padding: 0 0 10px 0px;
         color: #888;
-        border-bottom: 1px solid #ccc;
       }
       .file-list-item {
         padding: 5px;
@@ -1939,12 +1937,24 @@ Custom property | Description | Default
         display: flex;
         align-items: center;
         border-top: 1px solid #ccc;
+        
+      }
+      .header {
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid #ccc;
+        margin-bottom: 5px;
+      }
+      #logo {
+        width: 64px;
       }
     </style>
 
-    <div style="display: flex;align-items: center;">
+    <div class="header">
+      <img id="logo">
       <div style="padding:10px;flex-grow:1">
-        <b>EarthEngine Connector</b>
+        <div><b>EarthEngine Connector</b></div>
+        <div class="sub-heading">Select local script to import</div>
       </div>
       <div>
         <paper-icon-button icon="close" on-click="triggerClose"></paper-icon-button>
@@ -1961,7 +1971,6 @@ Custom property | Description | Default
     </div>
 
     <div id="list">
-      <div class="sub-heading">Select local script to import</div>
       <div style="max-height: 250px; overflow: auto">
         <template is="dom-repeat" items="{{files}}">
           <div class="file-list-item" on-click="onFileClick" index$="{{index}}">

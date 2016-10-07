@@ -10518,6 +10518,7 @@ Polymer({
 
       attached : function() {
         this.detectEEScriptLoad();
+        this.$.files.setIcon(this.getAttribute('icon'));
       },
 
       showFilePanel : function() {
@@ -10567,6 +10568,10 @@ Polymer({
             []
           }
         }
+      },
+
+      setIcon : function(iconUrl) {
+        this.$.logo.setAttribute('src', iconUrl);
       },
 
       triggerClose : function() {

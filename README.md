@@ -1,5 +1,5 @@
-# EarthEngine Connector
-Run local NodeJS scripts using CommonJS modules in earthengine.
+# ![Logo](chrome-extension/images/icon-128.png) Earth Engine Connector
+Run local NodeJS scripts using CommonJS modules in Earth Engine.
 
 ## Requirements
 
@@ -8,7 +8,7 @@ Run local NodeJS scripts using CommonJS modules in earthengine.
 
 ## Install and Setup
 
-First, you will need the EarthEngine connector file server. Install 
+First, you will need the Earth Engine connector file server. Install 
 via NPM.
 
 ```bash
@@ -39,7 +39,7 @@ At the top, on the right hand side, check 'Developer Mode'.  Then
 click the 'Load unpackaged extension'.  Using the file selector, select the
 folder 'chrome-extension' from this repo.
 
-You should now see 'EarthEngine Connector' in the extensions list and are
+You should now see 'Earth Engine Connector' in the extensions list and are
 now good to go.
 
 ## Usage
