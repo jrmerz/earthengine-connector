@@ -28,7 +28,7 @@ if( root.toLowerCase() === '-h' || root.toLowerCase() === '--help' ) {
 /**
  * Verify path
  */
-if( !root.match(/^\//) ) {
+if( !path.isAbsolute(root) ) {
   root = path.join(process.cwd(), root);
 }
 if( !fs.existsSync(root) ) {
@@ -52,7 +52,7 @@ app.use((req, res, next) => {
 app.get('/', (req, res) => {
   res.send(`<h1>It Works!</h1>
     The EarthEngine Connector Server is up and running.
-  `);
+  `).end();
 });
 
 /**
