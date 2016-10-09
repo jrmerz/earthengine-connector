@@ -26,21 +26,9 @@ to the server as the first argument.
 You can test the server is working by visiting [http://127.0.0.1:9812](http://127.0.0.1:9812)
 in your browser.
 
-Second, you need the EarthEngine-Connector Google Chrome Plugin.
-Until it is pushed to the extension store (TODO), you will need to
-pull this repo and add to Google Chrome manually.
+Second, you need the [Earth Engine Connector Google Chrome Plugin.](https://chrome.google.com/webstore/detail/earth-engine-connector/dojghogmelnchlebnpncaclgljkkmcgf)
+Click the link to install.
 
-```
-> git clone https://github.com/jrmerz/earthengine-connector 
-```
-
-Then open Google Chrome and visit [chrome://extensions/](chrome://extensions/)
-At the top, on the right hand side, check 'Developer Mode'.  Then
-click the 'Load unpackaged extension'.  Using the file selector, select the
-folder 'chrome-extension' from this repo.
-
-You should now see 'Earth Engine Connector' in the extensions list and are
-now good to go.
 
 ## Usage
 
@@ -64,3 +52,10 @@ require() function to import other files.  You can pull and publish to NPM as we
 though be warned, all imported JS code needs to be able to run inside the EE 
 playground.  Finally, you can now store your scripts in Github, Bitbucket or other
 common code repositories.
+
+## Connection Issues
+
+If [http://127.0.0.1:9812](http://127.0.0.1:9812) is loading but your are still see
+the message **Error connecting the JS-EE server**, check the right side of the address
+bar.  If you see a shield with a slash through it, click the icon and allow mixed content
+to load.
