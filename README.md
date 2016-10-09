@@ -37,7 +37,7 @@ Visit [http://code.earthengine.google.com](http://code.earthengine.google.com)
 with the Chrome extension installed and js-ee server running.  There are some 
 examples tutorial scripts in the **examples** dir you can serve with js-ee for testing.
 
-At the bottom right corner for the EarthEngine playground you should see a upload 
+At the bottom right corner for the Earth Engine playground you should see a upload 
 icon button.  Click it to see all files from the directory you are serving.  
 Click any file to load.
 

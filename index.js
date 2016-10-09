@@ -51,7 +51,7 @@ app.use((req, res, next) => {
  */
 app.get('/', (req, res) => {
   res.send(`<h1>It Works!</h1>
-    The EarthEngine Connector Server is up and running.
+    The Earth Engine Connector File Server is up and running.
   `).end();
 });
 
