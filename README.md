@@ -6,14 +6,18 @@ Run local NodeJS scripts using CommonJS modules in the Earth Engine playground.
  - [NodeJS (& NPM)](http://nodejs.org/)
  - Google Chrome
 
-## Install and Setup
+## Initial Install
 
-First, you will need the Earth Engine connector file server. Install 
-via NPM.
+First, you will need the Earth Engine connector file server. Install via NPM.
 
 ```bash
 > npm install -g earthengine-connector
 ```
+
+Second, you need the [Earth Engine Connector Google Chrome Plugin.](https://chrome.google.com/webstore/detail/earth-engine-connector/dojghogmelnchlebnpncaclgljkkmcgf)
+Click the link to install.
+
+## Setup
 
 Now start the up the server in the directory where your local
 Earth Engine scripts live.  Alternatively you can pass a directory
@@ -25,9 +29,6 @@ to the server as the first argument.
 
 You can test the server is working by visiting [http://127.0.0.1:9812](http://127.0.0.1:9812)
 in your browser.
-
-Second, you need the [Earth Engine Connector Google Chrome Plugin.](https://chrome.google.com/webstore/detail/earth-engine-connector/dojghogmelnchlebnpncaclgljkkmcgf)
-Click the link to install.
 
 
 ## Usage
