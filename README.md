@@ -8,6 +8,8 @@ Run local NodeJS scripts using CommonJS modules in the Earth Engine playground.
 
 ## Initial Install
 
+[Quick Start Video](https://youtu.be/EBqHQrLUKjs)
+
 First, you will need the Earth Engine connector file server. Install via NPM.
 
 ```bash
