@@ -1,6 +1,6 @@
 {
   "name": "earthengine-connector",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Run local NodeJS scripts using CommonJS modules in Earth Engine",
   "main": "index.js",
   "scripts": {
@@ -26,6 +26,7 @@
   "homepage": "https://github.com/jrmerz/earthengine-connector#readme",
   "dependencies": {
     "browserify": "^13.1.0",
+    "colors": "^1.1.2",
     "express": "^4.14.0"
   }
 }
