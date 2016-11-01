@@ -36,7 +36,6 @@
         display: flex;
         align-items: center;
         border-top: 1px solid #ccc;
-        
       }
       .header {
         display: flex;
@@ -81,9 +80,9 @@
 
     <div class="footer">
       <div id="from"></div>
-      <paper-icon-button icon="cached" on-click="loadFiles" style="color: #333"></paper-icon-button>
       <div style="text-align:right"><a href="https://github.com/jrmerz/earthengine-connector" target="_blank">Help</a></div>
     </div>
+    <socket-io on-connected="loadFiles" on-file-change="loadFiles" on-push="onCodePushed"></socket-io>
     
   </template>
   <script>
@@ -109,6 +108,19 @@
 
       onShow : function() {
         this.loadFiles();
+      },
+
+      onCodePushed : function(e) {
+        this.clear(function(){
+          this.writeChar(e.detail.code);
+          this.fire('script-pushed');
+
+          if( e.detail.run ) {
+            setTimeout(function(){
+              this.click('.goog-button.run-button');
+            }.bind(this), 200);
+          }
+        }.bind(this));
       },
 
       loadFiles : function() {

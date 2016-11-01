@@ -10536,6 +10536,10 @@ Polymer({
         this.$.reload.style.display = 'block';
       },
 
+      onScriptPush : function() {
+        this.$.reload.style.display = 'none';
+      },
+
       reload : function() {
         this.$.files.loadScript();
       },
@@ -10580,6 +10584,19 @@ Polymer({
 
       onShow : function() {
         this.loadFiles();
+      },
+
+      onCodePushed : function(e) {
+        this.clear(function(){
+          this.writeChar(e.detail.code);
+          this.fire('script-pushed');
+
+          if( e.detail.run ) {
+            setTimeout(function(){
+              this.click('.goog-button.run-button');
+            }.bind(this), 200);
+          }
+        }.bind(this));
       },
 
       loadFiles : function() {
@@ -10686,5 +10703,49 @@ Polymer({
 
           clickEvent = new MouseEvent('click',{bubbles:true});
           document.querySelector(eleQuery).dispatchEvent(clickEvent);
+      }
+    });
+Polymer({
+      is: 'socket-io',
+
+      ready : function() {
+        this.loadLib();
+      },
+
+      loadLib : function() {
+        if( this.script ) this.removeChild(this.script);
+
+        this.script = document.createElement('script');
+        this.script.src = 'http://127.0.0.1:9812/socket.io/socket.io.js';
+        this.script.onload = this.onSocketLibReady.bind(this);
+        this.script.onerror = this.retryLibLoad.bind(this);
+        this.appendChild(this.script);
+      },
+
+      retryLibLoad : function() {
+        setTimeout(this.loadLib.bind(this), 5000);
+      },
+
+      onSocketLibReady : function() {
+        this.innerHTML = 'Connecting to server...';
+        var socket = io('http://127.0.0.1:9812');
+
+        socket.on('connect', function(){
+          this.fire('connected');
+          this.innerHTML = 'Connected to server.';
+          socket.emit('socket-type', 'ee');
+        }.bind(this));
+
+        socket.on('file-change', function(){
+          this.fire('file-change');
+        }.bind(this));
+        
+        socket.on('disconnect', function(){
+          this.innerHTML = '<span style="color:red">Connecting to server...</span>';
+        }.bind(this));
+
+        socket.on('push', function (data) {
+          this.fire('push', data);
+        }.bind(this));
       }
     });

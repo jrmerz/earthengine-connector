@@ -2,7 +2,7 @@
 {
   "name": "Earth Engine Connector",
   "description": "Load local NodeJS scripts into Earth Engine",
-  "version": "0.0.2",
+  "version": "0.0.3",
     "default_locale": "en",
   "permissions": [
     "activeTab",

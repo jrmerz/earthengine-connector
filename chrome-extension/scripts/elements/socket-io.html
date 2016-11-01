@@ -1,0 +1,59 @@
+
+<dom-module id="socket-io">
+  <template>
+    <style>
+      :host {
+        display: block;
+        color: #ccc;
+        font-size: 11px;
+      }
+    </style>
+    Loading socket library...
+  </template>
+  <script>
+    Polymer({
+      is: 'socket-io',
+
+      ready : function() {
+        this.loadLib();
+      },
+
+      loadLib : function() {
+        if( this.script ) this.removeChild(this.script);
+
+        this.script = document.createElement('script');
+        this.script.src = 'http://127.0.0.1:9812/socket.io/socket.io.js';
+        this.script.onload = this.onSocketLibReady.bind(this);
+        this.script.onerror = this.retryLibLoad.bind(this);
+        this.appendChild(this.script);
+      },
+
+      retryLibLoad : function() {
+        setTimeout(this.loadLib.bind(this), 5000);
+      },
+
+      onSocketLibReady : function() {
+        this.innerHTML = 'Connecting to server...';
+        var socket = io('http://127.0.0.1:9812');
+
+        socket.on('connect', function(){
+          this.fire('connected');
+          this.innerHTML = 'Connected to server.';
+          socket.emit('socket-type', 'ee');
+        }.bind(this));
+
+        socket.on('file-change', function(){
+          this.fire('file-change');
+        }.bind(this));
+        
+        socket.on('disconnect', function(){
+          this.innerHTML = '<span style="color:red">Connecting to server...</span>';
+        }.bind(this));
+
+        socket.on('push', function (data) {
+          this.fire('push', data);
+        }.bind(this));
+      }
+    });
+  </script>
+</dom-module>

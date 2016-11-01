@@ -22,7 +22,7 @@
       <paper-fab mini icon="cached" title="Reload Current File" on-click="reload" id="reload"></paper-fab>
       <paper-fab mini icon="file-upload" title="Import JS File" on-click="showFilePanel" id="fab"></paper-fab>
     </div>
-    <file-select-panel on-close="hideFilePanel" on-file-load="onFileLoad" id="files"></file-select-panel>
+    <file-select-panel on-close="hideFilePanel" on-script-pushed="onScriptPush" on-file-load="onFileLoad" id="files"></file-select-panel>
 
   </template>
   <script>
@@ -47,6 +47,10 @@
 
       onFileLoad : function() {
         this.$.reload.style.display = 'block';
+      },
+
+      onScriptPush : function() {
+        this.$.reload.style.display = 'none';
       },
 
       reload : function() {
