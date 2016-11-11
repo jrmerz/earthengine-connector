@@ -83,6 +83,8 @@
       <div style="text-align:right"><a href="https://github.com/jrmerz/earthengine-connector" target="_blank">Help</a></div>
     </div>
     <socket-io on-connected="loadFiles" on-file-change="loadFiles" on-push="onCodePushed"></socket-io>
+
+    <paper-toast id="toast" text="Running script from EE connector..."></paper-toast>
     
   </template>
   <script>
@@ -96,6 +98,11 @@
             []
           }
         }
+      },
+
+      ready : function() {
+        this.removeChild(this.$.toast);
+        document.body.appendChild(this.$.toast);
       },
 
       setIcon : function(iconUrl) {
@@ -116,6 +123,7 @@
           this.fire('script-pushed');
 
           if( e.detail.run ) {
+            this.$.toast.open();
             setTimeout(function(){
               this.click('.goog-button.run-button');
             }.bind(this), 200);

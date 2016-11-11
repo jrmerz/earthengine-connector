@@ -1,4 +1,4 @@
 node_modules
-chrome-extension/scripts/bower_components
+chrome-extension/lib/bower_components
 chrome-extension.crx
 chrome-extension.pem
