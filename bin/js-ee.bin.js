@@ -3,7 +3,7 @@
 var options = {
   root : '',
   onServerReady : function() {
-    require('./lib/checkForUpdates')();
+    require('../lib/checkForUpdates')();
   }
 }
 
